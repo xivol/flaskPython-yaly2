@@ -1,5 +1,5 @@
 import flask
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 from data import db_session
 from data.jobs import Jobs
 
@@ -33,3 +33,34 @@ def get_job_by_id(job_id):
 def error_not_found(e):
     return make_response(jsonify({"error": e.description}), 404)
 
+
+@blueprint.route('/api/jobs', methods=['POST'])
+def add_jobs():
+    if not request.json:
+        return make_response(jsonify({"error": "no json"}), 400)
+
+    if not all(key in request.json
+               for key in ["job", "work_size", "collaborators",
+                           "is_finished", "team_leader"]):
+        return make_response(jsonify({"error": "not enough data"}), 400)
+
+    j = Jobs()
+    j.job = request.json["job"]
+    j.work_size = int(request.json["work_size"])
+    j.collaborators = request.json["collaborators"]
+    j.is_finished = bool(request.json["is_finished"])
+    j.team_leader = int(request.json["team_leader"])
+    sess = db_session.create_session()
+    sess.add(j)
+    sess.commit()
+    return make_response(jsonify({"ok": j.id}), 201)
+
+
+@blueprint.route('/api/jobs', methods=['PUT'])
+def change_jobs():
+    return flask.abort(500)
+
+
+@blueprint.route('/api/jobs', methods=['DELETE'])
+def delete_jobs():
+    return flask.abort(500)
