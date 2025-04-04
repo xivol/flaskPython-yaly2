@@ -6,9 +6,13 @@ from data.jobs import Jobs
 from forms.users import LoginForm, RegisterForm
 from forms.jobs import JobsCreateForm
 
+from api.jobs import blueprint as jobs_bp
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "my secret key"
+app.register_blueprint(jobs_bp)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -103,3 +107,4 @@ def jobs_create():
 
 global_init("db/database.sqlite")
 app.run('localhost', 8080, debug=True)
+
