@@ -1,10 +1,10 @@
 from flask import *
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
-from flaskPython.data.db_session import create_session, global_init
-from flaskPython.data.users import User
-from flaskPython.data.jobs import Jobs
-from flaskPython.forms.users import LoginForm, RegisterForm
-from flaskPython.forms.jobs import JobsCreateForm
+from data.db_session import create_session, global_init
+from data.users import User
+from data.jobs import Jobs
+from forms.users import LoginForm, RegisterForm
+from forms.jobs import JobsCreateForm
 
 
 app = Flask(__name__)
